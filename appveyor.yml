@@ -1,0 +1,64 @@
+image: Visual Studio 2017
+clone_folder: c:\projects\xdoc
+init:
+- ps: >-
+    git config --global core.autocrlf input
+
+    write-host $env:APPVEYOR_ACCOUNT_NAME
+
+    write-host $env:APPVEYOR_PROJECT_NAME
+
+    write-host "https://$env:APPVEYOR_ACCOUNT_NAME.github.io/$env:APPVEYOR_PROJECT_NAME/"
+environment:
+  op_build_user: "xxred"
+  op_build_user_email: "1250407685@qq.com"
+install:
+- ps: >-
+    # Install-Product node 9.9.0 x64
+
+    write-host '准备安装vuepress'
+
+    npm install vuepress -g
+
+    write-host '安装完成vuepress'
+
+    # npm install
+build_script:
+- ps: >-
+    write-host '开始构建 '
+
+    npm run build
+
+    # vuepress build articles
+
+    write-host '结束构建 '
+test_script:
+- ps: >-
+    node -v
+
+    vuepress -V
+on_success:
+- ps: >-
+    write-host '构建成功了！！！准备发布出去~~~'
+
+    git config --global credential.helper store
+
+    git config --global user.email $env:op_build_user_email
+
+    git config --global user.name $env:op_build_user
+
+    write-host '开始克隆gh-pages'
+
+    git clone https://github.com/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_NAME.git -b gh-pages origin_site -q
+
+    Copy-Item origin_site/.git vuepress -recurse
+
+    CD vuepress
+
+    git add -A 2>&1
+
+    git commit -m "CI Updates" -q
+
+    git push origin gh-pages -q
+on_failure:
+- ps: write-host '构建失败了，```呜呜呜```'

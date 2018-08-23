@@ -50,6 +50,7 @@ on_success:
     write-host '开始克隆gh-pages'
 
     # git clone https://github.com/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_NAME.git -b gh-pages origin_site -q
+    
     git clone https://github.com/xxred/XDoc.git -b gh-pages origin_site -q
 
     Copy-Item origin_site/.git vuepress -recurse

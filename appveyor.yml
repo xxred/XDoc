@@ -51,7 +51,7 @@ on_success:
 
     # git clone https://github.com/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_NAME.git -b gh-pages origin_site -q
     
-    git clone https://github.com/xxred/XDoc.git -b gh-pages origin_site -q
+    git clone -q --branch=gh-pages https://github.com/xxred/XDoc.git origin_site
 
     Copy-Item origin_site/.git vuepress -recurse
 
